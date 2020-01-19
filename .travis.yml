@@ -8,12 +8,8 @@ branches:
     - master
 
 script:
-  - nix-env -iA cachix -f https://cachix.org/api/v1/install
   - nix-env -i cookiecutter
-  - cachix use alexpeits-travis
-  - cachix push alexpeits-travis --watch-store&
-  - echo 'default_context:' > config.yaml
-  - echo '    package_name: travis-test' >> config.yaml
+  - "echo 'default_context:\n    package_name: travis-test' > config.yaml"
   - cookiecutter --config-file config.yaml --no-input .
   - cd travis-test
   - nix-build --arg pkgs 'import <nixpkgs> {}' --arg withHoogle false
