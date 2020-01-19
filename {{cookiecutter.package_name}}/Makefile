@@ -9,7 +9,7 @@ ghcid:
 	ghcid -a --command='cabal new-repl' --restart={{cookiecutter.package_name}}.cabal
 
 ghcid-stack:
-	ghcid -a --command='stack ghci -- src/**/*.hs Example.hs'
+	ghcid -a --command='stack ghci -- src/**/*.hs'
 
 dist:
 	cabal new-sdist
