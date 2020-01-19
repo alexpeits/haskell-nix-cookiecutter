@@ -9,7 +9,6 @@ branches:
 
 script:
   - nix-env -i cookiecutter
-  - echo "default_context:\n    package_name: travis-test" > config.yaml
-  - cookiecutter --config-file config.yaml --no-input .
+  - cookiecutter --config-file ci/cookiecutter-config.yml --no-input .
   - cd travis-test
   - nix-build --arg pkgs 'import <nixpkgs> {}' --arg withHoogle false
