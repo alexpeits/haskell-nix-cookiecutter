@@ -21,7 +21,7 @@ extra-source-files:
     README.md
     CHANGELOG.md
 
-{%- if cookiecutter.git_username != '' and cookiecutter.git_repo_name != '' %}
+{% if cookiecutter.git_username != '' and cookiecutter.git_repo_name != '' -%}
 source-repository head
   type: git
   location: https://github.com/{{cookiecutter.git_username}}/{{cookiecutter.git_repo_name}}
