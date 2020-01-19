@@ -1,5 +1,7 @@
 # haskell-nix-cookiecutter
 
+[![Build Status](https://travis-ci.org/alexpeits/haskell-nix-cookiecutter.svg?branch=master)](https://travis-ci.org/alexpeits/haskell-nix-cookiecutter)
+
 ## Usage
 
 Run
