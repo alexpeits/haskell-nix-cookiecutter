@@ -3,5 +3,6 @@
   "git_repo_name": "{{cookiecutter.package_name}}",
   "git_username": "",
   "author_name": "{{cookiecutter.git_username}}",
-  "author_email": ""
+  "author_email": "",
+  "gh_pages": ["yes", "no"]
 }

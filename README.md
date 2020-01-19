@@ -26,6 +26,7 @@ before running the command above.
 - stack
 - nix + niv
 - direnv
+- docsify
 - hoogle
 - tests with markdown-unlit
 - a Makefile with some helpers

@@ -56,7 +56,8 @@ test-suite {{cookiecutter.package_name}}-test
 
 test-suite readme-test
   type: exitcode-stdio-1.0
-  main-is: README.lhs
+  hs-source-dirs: docs
+  main-is: docs.lhs
   ghc-options:
       -Wall
       -Wno-unticked-promoted-constructors

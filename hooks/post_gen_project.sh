@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-ln -s ./README.md ./README.lhs
+(cd docs && ln -s ./docs.md ./docs.lhs)
