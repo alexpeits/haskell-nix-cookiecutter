@@ -2,12 +2,18 @@ cabal-version: 2.2
 
 name:           {{cookiecutter.package_name}}
 version:        0.1.0.0
+{%- if cookiecutter.git_username != '' and cookiecutter.git_repo_name != '' %}
 description:    Please see the README on GitHub at <https://github.com/{{cookiecutter.git_username}}/{{cookiecutter.git_repo_name}}#readme>
 homepage:       https://github.com/{{cookiecutter.git_username}}/{{cookiecutter.git_repo_name}}#readme
 bug-reports:    https://github.com/{{cookiecutter.git_username}}/{{cookiecutter.git_repo_name}}/issues
-author:         {{cookiecutter.author_name}}
+{%- endif %}
+{%- if cookiecutter.author_email != '' %}
 maintainer:     {{cookiecutter.author_email}}
+{%- endif %}
+{%- if cookiecutter.author_name != '' %}
+author:         {{cookiecutter.author_name}}
 copyright:      2020 {{cookiecutter.author_name}}
+{%- endif %}
 license:        BSD-3-Clause
 license-file:   LICENSE
 build-type:     Simple
@@ -15,14 +21,16 @@ extra-source-files:
     README.md
     CHANGELOG.md
 
+{%- if cookiecutter.git_username != '' and cookiecutter.git_repo_name != '' %}
 source-repository head
   type: git
   location: https://github.com/{{cookiecutter.git_username}}/{{cookiecutter.git_repo_name}}
+{%- endif %}
 
 library
   exposed-modules:
   other-modules:
-      Paths_{{cookiecutter.package_name}}
+      Paths_{{cookiecutter.package_name|replace('-', '_')}}
   hs-source-dirs:
       src
   build-depends:
@@ -32,7 +40,7 @@ library
 executable {{cookiecutter.package_name}}-exe
   main-is: Main.hs
   other-modules:
-      Paths_{{cookiecutter.package_name}}
+      Paths_{{cookiecutter.package_name|replace('-', '_')}}
   hs-source-dirs:
       app
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
@@ -45,7 +53,7 @@ test-suite {{cookiecutter.package_name}}-test
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
-      Paths_{{cookiecutter.package_name}}
+      Paths_{{cookiecutter.package_name|replace('-', '_')}}
   hs-source-dirs:
       test
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
