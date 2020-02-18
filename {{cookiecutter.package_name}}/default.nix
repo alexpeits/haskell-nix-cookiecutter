@@ -25,23 +25,28 @@ let
     });
   };
 
-  haskellPackages = if (inShell && withHoogle) then
+  haskellPackagesBase = if (inShell && withHoogle) then
     haskellPackagesWithHoogle
   else
     haskellPackagesNoHoogle;
 
   src = nixpkgs.nix-gitignore.gitignoreSource [ ] ./.;
+  drv = haskellPackages.callCabal2nix "{{cookiecutter.package_name}}" src { };
 
-  overrides = import ./nix/overrides.nix {
-    pkgs = nixpkgs;
-    haskellPackages = haskellPackages;
+  haskellPackages = haskellPackagesBase.override {
+    overrides = self: super:
+      let
+        packages = import ./nix/overrides.nix {
+          pkgs = pkgs;
+          self = self;
+          super = super;
+        };
+      in packages // { "{{cookiecutter.package_name}}" = drv; };
   };
 
-  drv = haskellPackages.callCabal2nix "{{cookiecutter.package_name}}" src overrides;
-
   shell = nixpkgs.mkShell {
-    inputsFrom = [ drv.env ];
+    inputsFrom = [ haskellPackages."{{cookiecutter.package_name}}".env ];
     buildInputs = [ haskellPackages.ghcid haskellPackages.cabal-install ];
   };
 
-in if inShell then shell else drv
+in if inShell then shell else haskellPackages."{{cookiecutter.package_name}}"
