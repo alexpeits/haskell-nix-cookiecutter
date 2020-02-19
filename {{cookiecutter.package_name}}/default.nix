@@ -37,7 +37,7 @@ let
     overrides = self: super:
       let
         packages = import ./nix/overrides.nix {
-          pkgs = pkgs;
+          pkgs = nixpkgs;
           self = self;
           super = super;
         };
@@ -45,8 +45,8 @@ let
   };
 
   shell = nixpkgs.mkShell {
-    inputsFrom = [ haskellPackages."{{cookiecutter.package_name}}".env ];
+    inputsFrom = [ haskellPackages.{{cookiecutter.package_name}}.env ];
     buildInputs = [ haskellPackages.ghcid haskellPackages.cabal-install ];
   };
 
-in if inShell then shell else haskellPackages."{{cookiecutter.package_name}}"
+in if inShell then shell else haskellPackages.{{cookiecutter.package_name}}
