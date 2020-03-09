@@ -11,5 +11,5 @@ script:
   - nix-env -i cookiecutter
   - cookiecutter --config-file ci/cookiecutter-config.yml --no-input .
   - cd travis-test
-  - nix-build --arg pkgs 'import <nixpkgs> {}'
-  - nix-shell --arg pkgs 'import <nixpkgs> {}' --command 'hoogle fmap --count=1'
+  - nix-build
+  - nix-shell --command 'hoogle fmap --count=1'
