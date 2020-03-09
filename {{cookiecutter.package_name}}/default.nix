@@ -1,54 +1,43 @@
 # to see ghc versions:
 # nix-instantiate --eval -E "with import ./nix/nixpkgs.nix {}; lib.attrNames haskell.compiler"
-{ pkgs ? null, compiler ? null, withHoogle ? true, jailbreak ? false }:
+{ pkgs ? null, compiler ? null }:
 
 let
 
   nixpkgs = if isNull pkgs then
-    import (import ./nix/sources.nix).{{cookiecutter.nixpkgs}} { }
+    import (import ./nix/sources.nix).{{cookiecutter.nixpkgs}} {}
   else if builtins.typeOf pkgs == "set" then
     pkgs
   else
-    import (builtins.getAttr pkgs (import ./nix/sources.nix)) { };
+    import (builtins.getAttr pkgs (import ./nix/sources.nix)) {};
 
-  inShell = nixpkgs.lib.inNixShell;
-
-  haskellPackagesNoHoogle = if isNull compiler then
+  haskellPackagesBase = if isNull compiler then
     nixpkgs.haskellPackages
   else
     nixpkgs.haskell.packages.${compiler};
 
-  haskellPackagesWithHoogle = haskellPackagesNoHoogle.override {
-    overrides = (self: super: {
-      ghc = super.ghc // { withPackages = super.ghc.withHoogle; };
-      ghcWithPackages = self.ghc.withPackages;
-    });
-  };
-
-  haskellPackagesBase = if (inShell && withHoogle) then
-    haskellPackagesWithHoogle
-  else
-    haskellPackagesNoHoogle;
-
-  src = nixpkgs.nix-gitignore.gitignoreSource [ ] ./.;
-
   haskellPackages = haskellPackagesBase.override {
     overrides = self: super:
       let
-        packages = import ./nix/overrides.nix {
+        hsPkgs = import ./nix/overrides.nix {
           pkgs = nixpkgs;
           self = self;
           super = super;
         };
-        maybeJailbreak =
-          if jailbreak then nixpkgs.haskell.lib.doJailbreak else nixpkgs.lib.id;
-        drv = self.callCabal2nix "{{cookiecutter.package_name}}" src { };
-      in packages // { "{{cookiecutter.package_name}}" = maybeJailbreak drv; };
+        src = nixpkgs.nix-gitignore.gitignoreSource [] ./.;
+        drv = self.callCabal2nix "{{cookiecutter.package_name}}" src {};
+      in
+        hsPkgs // { {{cookiecutter.package_name}} = drv; };
   };
 
-  shell = nixpkgs.mkShell {
-    inputsFrom = [ haskellPackages.{{cookiecutter.package_name}}.env ];
+  shell = haskellPackages.shellFor {
+    packages = ps: [ ps.{{cookiecutter.package_name}} ];
     buildInputs = [ haskellPackages.ghcid haskellPackages.cabal-install ];
+    withHoogle = true;
   };
 
-in if inShell then shell else haskellPackages.{{cookiecutter.package_name}}
+in
+
+if nixpkgs.lib.inNixShell
+then shell
+else haskellPackages.{{cookiecutter.package_name}}
