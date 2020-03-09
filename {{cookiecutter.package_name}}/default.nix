@@ -1,6 +1,6 @@
 # to see ghc versions:
 # nix-instantiate --eval -E "with import ./nix/nixpkgs.nix {}; lib.attrNames haskell.compiler"
-{ pkgs ? null, compiler ? null, withHoogle ? true }:
+{ pkgs ? null, compiler ? null, withHoogle ? true, jailbreak ? false }:
 
 let
 
@@ -31,7 +31,6 @@ let
     haskellPackagesNoHoogle;
 
   src = nixpkgs.nix-gitignore.gitignoreSource [ ] ./.;
-  drv = haskellPackages.callCabal2nix "{{cookiecutter.package_name}}" src { };
 
   haskellPackages = haskellPackagesBase.override {
     overrides = self: super:
@@ -41,7 +40,10 @@ let
           self = self;
           super = super;
         };
-      in packages // { "{{cookiecutter.package_name}}" = drv; };
+        maybeJailbreak =
+          if jailbreak then nixpkgs.haskell.lib.doJailbreak else nixpkgs.lib.id;
+        drv = self.callCabal2nix "{{cookiecutter.package_name}}" src { };
+      in packages // { "{{cookiecutter.package_name}}" = maybeJailbreak drv; };
   };
 
   shell = nixpkgs.mkShell {
