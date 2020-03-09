@@ -1,6 +1,6 @@
 .PHONY: ghcid
 
-NIV_VERSION?=nixos-stable
+NIV_VERSION?={{cookiecutter.nixpkgs}}
 HOOGLE_PORT?=8888
 DOCS_PORT?=9999
 

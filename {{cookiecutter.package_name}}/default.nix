@@ -5,7 +5,7 @@
 let
 
   nixpkgs = if isNull pkgs then
-    import (import ./nix/sources.nix).nixos-stable { }
+    import (import ./nix/sources.nix).{{cookiecutter.nixpkgs}} { }
   else if builtins.typeOf pkgs == "set" then
     pkgs
   else

@@ -4,5 +4,6 @@
   "git_username": "",
   "author_name": "{{cookiecutter.git_username}}",
   "author_email": "",
+  "nixpkgs": ["nixos-stable", "nixpkgs-unstable"],
   "gh_pages": ["yes", "no"]
 }
