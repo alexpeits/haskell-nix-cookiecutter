@@ -5,12 +5,13 @@
 let
 
   nixpkgs = if isNull pkgs then
-    import (import ./nix/sources.nix).{{cookiecutter.nixpkgs}} {}
+    import (import ./nix/sources.nix)."{{cookiecutter.nixpkgs}}" {}
   else if builtins.typeOf pkgs == "set" then
     pkgs
   else
     import (builtins.getAttr pkgs (import ./nix/sources.nix)) {};
 
+  # changing compilers might lead to building everything, beware
   haskellPackagesBase = if isNull compiler then
     nixpkgs.haskellPackages
   else
