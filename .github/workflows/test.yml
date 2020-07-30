@@ -1,0 +1,22 @@
+name: "Test minimal generated project"
+on:
+  pull_request:
+  push:
+jobs:
+  build-and-deploy:
+    name: Build and deploy
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2.3.1
+      with:
+        persist-credentials: false
+    - name: Install nix
+      uses: cachix/install-nix-action@v10
+    - name: Build site
+      run: |
+        nix-env -i cookiecutter
+        cookiecutter --config-file ci/cookiecutter-config.yml --no-input .
+        cd travis-test
+        nix-build
+        nix-shell --command 'hoogle fmap --count=1'
