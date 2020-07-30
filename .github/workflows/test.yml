@@ -13,10 +13,14 @@ jobs:
         persist-credentials: false
     - name: Install nix
       uses: cachix/install-nix-action@v10
-    - name: Build site
+    - name: Setup cachix
+      uses: cachix/cachix-action@v6
+      with:
+        name: alexpeits-gh-actions
+        signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
+    - name: Build project
       run: |
         nix-env -i cookiecutter
         cookiecutter --config-file ci/cookiecutter-config.yml --no-input .
-        cd travis-test
+        cd minimal-test
         nix-build
-        nix-shell --command 'hoogle fmap --count=1'

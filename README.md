@@ -1,6 +1,6 @@
 # haskell-nix-cookiecutter
 
-[![Build Status](https://travis-ci.org/alexpeits/haskell-nix-cookiecutter.svg?branch=master)](https://travis-ci.org/alexpeits/haskell-nix-cookiecutter)
+[![Build Status](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Falexpeits%2Fhaskell-nix-cookiecutter%2Fbadge&style=flat)](https://actions-badge.atrox.dev/alexpeits/haskell-nix-cookiecutter/goto)
 
 ## Usage
 

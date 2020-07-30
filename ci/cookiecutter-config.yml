@@ -1,2 +1,2 @@
 default_context:
-    package_name: travis-test
+    package_name: minimal-test
